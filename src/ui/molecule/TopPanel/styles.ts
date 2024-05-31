@@ -8,7 +8,6 @@ export const StyledDiv = styled.div`
     right: 0;
     height: 50px;
     padding:  10% 0 0 10%;
-    background-color: ${GlobalColors.primary};
     display: flex;
     justify-content: flex-start;
     align-items: center;
