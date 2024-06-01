@@ -35,42 +35,46 @@ const jsonSchema: ShitterRanking[] = [
 ];
 
 export const Body = (): ReactElement => {
-    const [ranking, setRanking] = useState<ShitterRanking[]>(jsonSchema);
-    const [updatedPodium, setUpdatedPodium] = useState<string>("");
+    const ranking : ShitterRanking[] = jsonSchema;
+    const [updatedPodiumSVG, setUpdatedPodiumSVG] = useState<string>("");
 
     useEffect((): void => {
             const updateImages = async (): Promise<void> => {
-                const updatedRanking: ShitterRanking[] = [...ranking];
                 let newPodium : string = await readFileAsString(podium);
-                for (const shitter of updatedRanking) {
-                    if (shitter.position === 1) {
-                        const base64Image : string = await base64FromPath(firstImage);
-                        shitter.base64Image = base64Image;
-                        newPodium = newPodium.replace("${ranking1}", base64Image);
-                    }
-                    if (shitter.position === 2) {
-                        const base64Image : string = await base64FromPath(secondImage);
-                        shitter.base64Image = base64Image;
-                        newPodium = newPodium.replace("${ranking2}", base64Image);
-                    }
-                    if (shitter.position === 3) {
-                        const base64Image : string = await base64FromPath(thirdImage);
-                        shitter.base64Image = base64Image;
-                        newPodium = newPodium.replace("${ranking3}", base64Image);
-                    }
+                const base64Image = {
+                    1 : await base64FromPath(firstImage),
+                    2 : await base64FromPath(secondImage),
+                    3 : await base64FromPath(thirdImage)
                 }
-                setRanking(updatedRanking);
-                setUpdatedPodium(newPodium);
+
+                ranking.forEach((shitter: ShitterRanking) : void => {
+                    switch (shitter.position) {
+                        case 1:
+                            shitter.base64Image = base64Image[1];
+                            newPodium = newPodium.replace("${ranking1}", shitter.base64Image);
+                            break;
+                        case 2:
+                            shitter.base64Image = base64Image[2];
+                            newPodium = newPodium.replace("${ranking2}", shitter.base64Image);
+                            break;
+                        case 3:
+                            shitter.base64Image = base64Image[3];
+                            newPodium = newPodium.replace("${ranking3}", shitter.base64Image);
+                            break;
+                    }
+                });
+
+                setUpdatedPodiumSVG(newPodium);
             };
 
-            if (updatedPodium === "") {
+            if (updatedPodiumSVG === "") {
                 updateImages().then();
             }
     }, [ranking]);
 
     return (
         <BodyStyles>
-            {updatedPodium && <ImageRankingPanelStyles src={`data:image/svg+xml;base64,${btoa(updatedPodium)}`} alt="podium" />}
+            {updatedPodiumSVG && <ImageRankingPanelStyles src={`data:image/svg+xml;base64,${btoa(updatedPodiumSVG)}`} alt="podium" />}
         </BodyStyles>
     );
 };
