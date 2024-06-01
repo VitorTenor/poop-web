@@ -131,6 +131,9 @@ dist
 
 # ide IntelliJ
 .idea/
+.idea
+./.idea/**
+.idea/**
 *.iml
 *.ipr
 *.iws
