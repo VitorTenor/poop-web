@@ -25,6 +25,6 @@ jobs:
       - name: deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          personal_token: ${{ secrets.ACTIONS_GITHUB_TOKEN }}
+#          personal_token: ${{ secrets.ACTIONS_GITHUB_TOKEN }}
           publish_dir: ./dist
           cname: poop.vitortenorio.com
