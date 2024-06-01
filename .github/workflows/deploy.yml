@@ -28,3 +28,4 @@ jobs:
           personal_token: ${{ secrets.ACTIONS_GITHUB_TOKEN }}
           publish_dir: ./dist
           cname: poop.vitortenorio.com
+
