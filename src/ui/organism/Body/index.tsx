@@ -59,12 +59,13 @@ export const Body = (): ReactElement => {
                         newPodium = newPodium.replace("${ranking3}", base64Image);
                     }
                 }
-
                 setRanking(updatedRanking);
                 setUpdatedPodium(newPodium);
             };
 
-            updateImages().then();
+            if (updatedPodium === "") {
+                updateImages().then();
+            }
     }, [ranking]);
 
     return (
